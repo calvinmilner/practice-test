@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Todo Task</title>
+</head>
+<body>
+    <form method="POST" action="/add-form" data-th-object="${information}">
+        <table>
+            <tr>
+                <td>ID <code></code></td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td><input type="text" name="name"></td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                
+                <td></td>
+            </tr>
+            <tr>
+                <td>Due Date</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Priority</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Status</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Created At</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Updated At</td>
+                <td></td>
+            </tr>
+        </table>
+        <div><button type="submit">Add</button></div>
+    </form>
+</body>
+</html>
