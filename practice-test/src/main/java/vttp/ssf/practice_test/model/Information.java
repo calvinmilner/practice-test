@@ -1,5 +1,11 @@
 package vttp.ssf.practice_test.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.validation.constraints.Size;
 
 public class Information {
@@ -9,15 +15,20 @@ public class Information {
     private String name;
     @Size(max=255)
     private String description;
-    
-    private String dueDate;
+    // @Pattern(pattern="EEE, dd-MM-yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date dueDate;
     private String priority;
     private String status;
-    private String created;
-    private String updated;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date created;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date updated;
 
-    public Information(String id, String name, String description, String dueDate, String priority, String status,
-            String created, String updated) {
+    public Information() {}
+
+    public Information(String id, String name, String description, Date dueDate, String priority, String status,
+            Date created, Date updated) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -52,11 +63,11 @@ public class Information {
         this.description = description;
     }
 
-    public String getDueDate() {
+    public Date getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(String dueDate) {
+    public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
 
@@ -76,19 +87,19 @@ public class Information {
         this.status = status;
     }
 
-    public String getCreated() {
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(String created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 
-    public String getUpdated() {
+    public Date getUpdated() {
         return updated;
     }
 
-    public void setUpdated(String updated) {
+    public void setUpdated(Date updated) {
         this.updated = updated;
     }
 
@@ -98,4 +109,16 @@ public class Information {
                 + "," + priority + "," + status + "," + created + "," + updated;
     }
     
+    // Setting date format followed by converting date to epochMilliseconds value to store in redis
+    public static long stringDateToEpochMilliSeconds(String jsonDate) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE, MM/dd/yyyy");
+            long convertedDate = (sdf.parse(jsonDate)).getTime();
+            return convertedDate;
+    }
+
+    public static Date epochMilliSecondsToDate(String jsonDate) {
+        long date = Long.parseLong(jsonDate);
+        Date convertedToDate = new Date(date);
+        return convertedToDate;
+    }
 }

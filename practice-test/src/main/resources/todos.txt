@@ -111,7 +111,7 @@
 },
 {
 "id":"194d87aa-70e4-424e-a1d2-8cf09ad6a3e8",
-"name":"Study cyber security",
+"name":"Study cybersecurity",
 "description":"Officiis asperiores veniam enim quia eveniet. Qui quae similique eos. Corporis non asperiores sit quidem.",
 "due_date":"Sun, 10/22/2024",
 "priority_level":"high",
