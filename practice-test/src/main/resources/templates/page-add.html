@@ -10,6 +10,11 @@
 </head>
 
 <body>
+    <!-- Display success message if available -->
+    <div>
+      <p data-th-if="${todo}"><code data-th-text="${todo}">Hi</code></p>
+    </div>
+
   <h1>Add Todo</h1>
   <form action="/user/new" method="post" data-th-object="${information}">
     <div class="mb-3">
@@ -59,9 +64,5 @@
       crossorigin="anonymous"></script>
   </form>
   <div><a data-th-href="@{/user/listing}"><button class="btn btn-outline-dark">Back to List</button></a></div>
-  <!-- Display success message if available -->
-  <div>
-    <p data-th-if="${todo}"><code data-th-text="${todo}"></code></p>
-  </div>
 </body>
 </html>

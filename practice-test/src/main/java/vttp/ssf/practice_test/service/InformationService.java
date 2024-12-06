@@ -4,7 +4,7 @@ import java.io.StringReader;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,18 +44,34 @@ public class InformationService {
             data.setStatus(j.getString("status"));
             data.setCreated(created);
             data.setUpdated(updated);
-            // Information data = new Information(j.getString("id"), j.getString("name"), j.getString("description"), dueDate, j.getString("priority_level"), j.getString("status"), created, updated);
+            // Information data = new Information(j.getString("id"), j.getString("name"),
+            // j.getString("description"), dueDate, j.getString("priority_level"),
+            // j.getString("status"), created, updated);
             info.add(data);
         }
         return info;
     }
+
     public void setGeneratedId(String id) {
         this.generatedId = id;
     }
+
     public String getGeneratedId() {
         return generatedId;
     }
+
     public void saveInfo(String jsonInfo) {
         listRepo.rightPush("data", jsonInfo);
+    }
+
+    public void deleteRecord(String id) {
+        List<String> information = listRepo.getList("data");
+        for (String s : information) {
+            JsonReader reader = Json.createReader(new StringReader(s));
+            JsonObject j = reader.readObject();
+            if (id.equals(j.getString("id"))) {
+                listRepo.remove("data", 1, s);
+            }
+        }
     }
 }

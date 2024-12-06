@@ -1,6 +1,7 @@
 package vttp.ssf.practice_test.repository;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -39,5 +40,19 @@ public class ListRepository {
 
     public List<String> getList(String redisKey) {
         return template.opsForList().range(redisKey, 0, -1);
+    }
+
+    public void remove(String redisKey, int count, String value) {
+        template.opsForList().remove(redisKey, count, value);
+    }
+    public void delete(String redisKey) {
+        template.delete(redisKey);
+    }
+    public void update(String redisKey, int count, String value) {
+        template.opsForList().set(redisKey, count, value);
+    }
+    public Set<String> getAllKeys() {
+        Set<String> keys = template.keys("*");
+        return keys;
     }
 }

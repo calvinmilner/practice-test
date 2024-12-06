@@ -76,6 +76,8 @@ public class AppBootStrap implements CommandLineRunner {
             //         j.getString("created_at"), j.getString("updated_at"));
 
             listRepo.rightPush("data", jObj.toString());
+            // listRepo.rightPush(j.getString("id"), jObj.toString());
+
         }
     }
 }
