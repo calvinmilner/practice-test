@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,11 +56,28 @@ public class UserController {
     }
 
     @GetMapping("/add")
-    public String getNewToDo(Model model) {
-        String id = UUID.randomUUID().toString();
-        infoServ.setGeneratedId(id);
-        model.addAttribute("id", id);
-        model.addAttribute("information", new Information());
+    public String getToDo(Model model, @RequestParam(value = "id", required = false) String uuid,
+            @RequestParam(required = false) Boolean success, @RequestParam(required = false) Boolean isUpdated) {
+        Information info;
+        boolean isEdit = false;
+        if (uuid != null) {
+            info = infoServ.getInfoById(uuid);
+            if (info != null)
+                isEdit = true;
+        } else {
+            String id = UUID.randomUUID().toString();
+            info = new Information();
+            info.setId(id);
+        }
+        if (Boolean.TRUE.equals(success)) {
+            if (Boolean.TRUE.equals(isUpdated))
+                model.addAttribute("todo", "Todo updated successfully");
+            else
+                model.addAttribute("todo", "Todo created successfully");
+        }
+        model.addAttribute("information", info);
+        model.addAttribute("isEdit", isEdit);
+
         return "page-add";
     }
 
@@ -75,7 +91,7 @@ public class UserController {
         long created = Information.stringDateToEpochMilliSeconds(ca);
         long updated = Information.stringDateToEpochMilliSeconds(ua);
         JsonObject j = Json.createObjectBuilder()
-                .add("id", infoServ.getGeneratedId())
+                .add("id", info.getId())
                 .add("name", info.getName())
                 .add("description", info.getDescription())
                 .add("due_date", String.valueOf(dueDate))
@@ -84,12 +100,9 @@ public class UserController {
                 .add("created_at", String.valueOf(created))
                 .add("updated_at", String.valueOf(updated))
                 .build();
+        boolean isUpdated = infoServ.saveInfo(info.getId(), j.toString());
 
-        // System.out.println(j.toString());
-        // infoServ.saveInfo(infoServ.getGeneratedId(), j.toString());
-        infoServ.saveInfo(j.toString());
-        model.addAttribute("todo", "Todo added successfully");
-        return "redirect:/user/add";
+        return "redirect:/user/add?success=true" + "&isUpdated=" + isUpdated;
     }
 
     @GetMapping("/listing")
@@ -111,4 +124,5 @@ public class UserController {
         infoServ.deleteRecord(id);
         return "redirect:/user/listing";
     }
+
 }

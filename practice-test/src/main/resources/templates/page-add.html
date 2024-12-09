@@ -12,30 +12,30 @@
 <body>
     <!-- Display success message if available -->
     <div>
-      <p data-th-if="${todo}"><code data-th-text="${todo}">Hi</code></p>
+      <p data-th-if="${todo}"><code data-th-text="${todo}"></code></p>
     </div>
 
-  <h1>Add Todo</h1>
+  <h1 data-th-text="${isEdit ? 'Edit Todo' : 'Create New Todo'}"></h1>
   <form action="/user/new" method="post" data-th-object="${information}">
     <div class="mb-3">
       <label for="id" class="form-label">ID</label>
-      <input type="text" class="form-control-plaintext" id="id" name="id" data-th-text="${id}">
+      <input type="text" class="form-control-plaintext" id="id" name="id" data-th-field="*{id}" readonly>
     </div>
     <div class="mb-3">
       <label for="name" class="form-label">Name</label>
-      <input type="text" class="form-control" id="name" name="name">
+      <input type="text" class="form-control" id="name" name="name" data-th-field="*{name}">
     </div>
     <div class="mb-3">
       <label for="description" class="form-label">Description</label>
-      <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+      <textarea class="form-control" id="description" name="description" rows="3" data-th-field="*{description}"></textarea>
     </div>
     <div class="mb-3">
       <label for="dueDate" class="form-label">Due Date</label>
-      <input type="date" class="form-control" id="dueDate" name="dueDate">
+      <input type="date" class="form-control" id="dueDate" name="dueDate" data-th-field="*{dueDate}">
     </div>
     <div class="mb-3">
       <label for="priority" class="form-label">Priority</label>
-      <select class="form-select" id="priority" name="priority" aria-label="Priority">
+      <select class="form-select" id="priority" name="priority" aria-label="Priority" data-th-field="*{priority}">
         <option value="low">Low</option>
         <option value="medium">Medium</option>
         <option value="high">High</option>
@@ -43,7 +43,7 @@
     </div>
     <div class="mb-3">
       <label for="status" class="form-label">Status</label>
-      <select class="form-select" id="status" name="status" aria-label="Status">
+      <select class="form-select" id="status" name="status" aria-label="Status" data-th-field="*{status}">
         <option value="pending">Pending</option>
         <option value="started">Started</option>
         <option value="in_progress">Progress</option>
@@ -52,13 +52,13 @@
     </div>
     <div class="mb-3">
       <label for="created" class="form-label">Created At</label>
-      <input type="date" class="form-control" id="created" name="created">
+      <input type="date" class="form-control" id="created" name="created" data-th-field="*{created}">
     </div>
     <div class="mb-3">
       <label for="updated" class="form-label">Updated At</label>
-      <input type="date" class="form-control" id="updated" name="updated">
+      <input type="date" class="form-control" id="updated" name="updated" data-th-field="*{updated}">
     </div>
-    <div><button type="submit" class="btn btn-outline-dark">Add New Todo</button></div>
+    <div><button type="submit" class="btn btn-outline-dark" data-th-text="${isEdit ? 'Update Todo' : 'Add New Todo'}"></button></div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"></script>

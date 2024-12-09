@@ -1,10 +1,11 @@
 package vttp.ssf.practice_test.service;
 
 import java.io.StringReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,6 @@ public class InformationService {
 
     @Autowired
     private ListRepository listRepo;
-
-    private String generatedId;
 
     public List<Information> getInfo() {
 
@@ -44,24 +43,24 @@ public class InformationService {
             data.setStatus(j.getString("status"));
             data.setCreated(created);
             data.setUpdated(updated);
-            // Information data = new Information(j.getString("id"), j.getString("name"),
-            // j.getString("description"), dueDate, j.getString("priority_level"),
-            // j.getString("status"), created, updated);
             info.add(data);
         }
         return info;
     }
 
-    public void setGeneratedId(String id) {
-        this.generatedId = id;
-    }
-
-    public String getGeneratedId() {
-        return generatedId;
-    }
-
-    public void saveInfo(String jsonInfo) {
-        listRepo.rightPush("data", jsonInfo);
+    public Boolean saveInfo(String id, String jsonInfo) throws ParseException {
+        List<String> information = listRepo.getList("data");
+        for (String s : information) {
+            JsonReader reader = Json.createReader(new StringReader(s));
+            JsonObject j = reader.readObject();
+            if ((j.getString("id")).contains(id)) {
+                listRepo.remove("data", 0, s);
+                listRepo.leftPush("data", jsonInfo);
+                return true;
+            }
+        }
+            listRepo.rightPush("data", jsonInfo);
+            return false;
     }
 
     public void deleteRecord(String id) {
@@ -73,5 +72,28 @@ public class InformationService {
                 listRepo.remove("data", 1, s);
             }
         }
+    }
+
+    public Information getInfoById(String id) {
+        Information d = new Information();
+        List<String> information = listRepo.getList("data");
+        for (String s : information) {
+            JsonReader reader = Json.createReader(new StringReader(s));
+            JsonObject j = reader.readObject();
+            if (j.getString("id").contains(id)) {
+                Date dueDate = Information.epochMilliSecondsToDate(j.getString("due_date"));
+                Date created = Information.epochMilliSecondsToDate(j.getString("created_at"));
+                Date updated = Information.epochMilliSecondsToDate(j.getString("updated_at"));
+                d.setId(j.getString("id"));
+                d.setName(j.getString("name"));
+                d.setDescription(j.getString("description"));
+                d.setDueDate(dueDate);
+                d.setPriority(j.getString("priority"));
+                d.setStatus(j.getString("status"));
+                d.setCreated(created);
+                d.setUpdated(updated);
+            }
+        }
+        return d;
     }
 }

@@ -34,8 +34,8 @@
                 <td><span data-th-text="${#dates.format(i.created, 'EEE, dd/MM/yyyy')}"></span></td>
                 <td><span data-th-text="${#dates.format(i.updated, 'EEE, dd/MM/yyyy')}"></span></td>
                 <td>
-                    <div><a data-th-href="@{/user/delete(id=${i.id})}"><button type="button" class="btn btn-outline-dark">Delete</button></a></div>
-                    <!-- <button formmethod="post" formaction="/update">Update</button> -->
+                    <div><a data-th-href="@{/user/delete(id=${i.id})}"><button type="button" class="btn btn-outline-dark">Delete</button></a>
+                    <a data-th-href="@{/user/add(id=${i.id})}"><button type="button" class="btn btn-outline-dark">Update</button></a></div>
                 </td>
             </tr>
         </tbody>
