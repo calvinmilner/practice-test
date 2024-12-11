@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+</head>
+
+<body>
+    <table>
+        <div data-th-each="p : ${products}" data-th-object="${p}">
+            <span data-th-text="*{id}"></span>
+            <span data-th-text="*{title}"></span>
+            <div>
+                <form action="/buy" method="post">
+                    <input type="hidden" name="id" data-th-value="*{id}">
+                    <button type="submit">Buy</button>
+                </form>
+            </div>
+            <br><br>
+        </div>
+    </table>
+</body>
+
+</html>
